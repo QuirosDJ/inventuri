@@ -37,8 +37,7 @@ export default function BlackHeaderPage() {
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
   const router = useRouter();
-  const [otherData, setOtherData] = useState<object[]>([]); // State for second table
-  const [_user, _setUser] = useState(null);
+
 
   useEffect(() => {
     
