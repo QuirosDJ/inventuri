@@ -8,16 +8,37 @@ import ReportsComponent from "../comp/reports";
 import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"; // Icon for sidebar toggle
 
+interface Item {
+  id: number;
+  Item_name: string;
+  locker: number;
+  unit: string;
+  quantity: number;
+  avail: number;
+  created_at: string;
+  stat: number;
+  
+}
+
+interface Equipment  {
+  id: number;
+  equipment_name: string;
+  Department: string;
+  serial_num: string;
+  count: number;
+  status: string;
+};
+
 export default function BlackHeaderPage() {
-  const [itemsData, setItemsData] = useState<any[]>([]);
-  const [equipmentData, setEquipmentData] = useState<any[]>([]);
+  const [itemsData, setItemsData] = useState<Item[]>([]);
+  const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
   const [activeTable, setActiveTable] = useState("equipment");
   
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
   const router = useRouter();
-  const [otherData, setOtherData] = useState<any[]>([]); // State for second table
-  const [user, setUser] = useState(null);
+  const [otherData, setOtherData] = useState<object[]>([]); // State for second table
+  const [_user, _setUser] = useState(null);
 
   useEffect(() => {
     
@@ -25,7 +46,7 @@ export default function BlackHeaderPage() {
     if (stat !== "1") {
       router.push("/"); // Redirect to login page
     }
-  }, []);
+  }, [router]);
 
   // Function to fetch data from Supabase
   const fetchData = async (table: string) => {

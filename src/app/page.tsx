@@ -8,7 +8,15 @@ import { supabase } from "@/utils/supabaseClient";
 
 
 
-const StatContext = createContext<{ stat: number; setStat: (value: number) => void } | null>(null);
+interface StatContextType {
+  stat: number;
+  setStat: (value: number) => void;
+}
+
+const StatContext = createContext<StatContextType>({
+  stat: 0,
+  setStat: () => {},
+});
 
 // Define the schema for validation
 const schema = z.object({
@@ -31,7 +39,7 @@ export default function LoginForm() {
     if (storedStat === "1") {
       router.push("/main"); 
     }
-  }, []);
+  }, [router]);
 
   const {
     register,
@@ -120,7 +128,7 @@ export default function LoginForm() {
 
         {/* Additional Links */}
         <p className="text-gray-600 text-center mt-4">
-          Don't have an account? <a href="#" className="text-blue-600">Sign up</a>
+          Don&apos;t have an account? <a href="#" className="text-blue-600">Sign up</a>
         </p>
       </div>
     </div>
