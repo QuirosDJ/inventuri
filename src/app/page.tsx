@@ -60,7 +60,7 @@ export default function LoginForm() {
       return;
     }
 
-    // Check if password matches (WARNING: Plain-text passwords should NOT be used in production)
+   
     if (userData.PASS !== data.password) {
       setErrorMessage("Invalid username or password.");
       setLoading(false);
@@ -77,7 +77,9 @@ export default function LoginForm() {
 
   return (
     
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100"
+    style={{ backgroundImage: "url('/resources/bg.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+    >
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-2xl">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
         {errorMessage && (

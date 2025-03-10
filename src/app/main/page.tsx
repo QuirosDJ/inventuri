@@ -84,7 +84,7 @@ export default function BlackHeaderPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex ">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white transform ${
@@ -116,9 +116,6 @@ export default function BlackHeaderPage() {
             </button>
           </li>
           <li>
-            <a href="#" className="block p-2 rounded hover:bg-gray-700">
-           
-            </a>
           </li>
         </ul>
         <button
@@ -130,7 +127,7 @@ export default function BlackHeaderPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-grow min-h-screen">
+      <div className="flex flex-col flex-grow min-h-screen ">
         {/* Header */}
         <div className="flex items-center justify-between bg-black text-white p-4">
           <button
@@ -143,7 +140,9 @@ export default function BlackHeaderPage() {
         </div>
 
         {/* Content Area */}
-        <main className="flex-grow bg-gray-100 p-6 flex justify-center items-center">
+        <main className="flex-grow  p-6 flex justify-center items-center"
+         style={{ backgroundImage: "url('/resources/bg.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+        >
           {loading ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75"></div>
@@ -159,7 +158,7 @@ export default function BlackHeaderPage() {
 
         {/* Footer */}
         <footer className="bg-gray-200 text-gray-700 text-center py-4">
-          <p>Powered by Derickskie</p>
+          <p>Powered by Derick Ramsy</p>
         </footer>
       </div>
     </div>
