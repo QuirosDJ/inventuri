@@ -2,16 +2,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createContext, useContext, useState,useEffect } from "react";
+import {  useState,useEffect } from "react";
 import { useRouter } from "next/navigation"; 
 import { supabase } from "@/utils/supabaseClient";
 
 
 
-interface StatContextType {
-  stat: number;
-  setStat: (value: number) => void;
-}
+
 
 
 
@@ -27,7 +24,7 @@ type FormData = z.infer<typeof schema>;
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [stat, setStat] = useState(0);
+ 
   const router = useRouter(); 
 
   useEffect(() => {
@@ -72,7 +69,7 @@ export default function LoginForm() {
 
 
     console.log("Login successful:", userData);
-    setStat(1); 
+   
     localStorage.setItem("stat", "1")
     setLoading(false);
     router.push("/main"); // Redirect to main page
