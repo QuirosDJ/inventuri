@@ -47,12 +47,12 @@ export default function LoginForm() {
     setLoading(true);
     setErrorMessage(""); // Clear previous errors
 
-    // Fetch user data where username matches input
+    
     const { data: userData, error } = await supabase
       .from("ACCOUNTS")
-      .select("USERNAME, PASS") // Select only necessary fields
+      .select("USERNAME, PASS") 
       .eq("USERNAME", data.username)
-      .single(); // Expect only one result
+      .single();
 
     if (error || !userData) {
       setErrorMessage("Invalid username or password.");
@@ -72,7 +72,7 @@ export default function LoginForm() {
    
     localStorage.setItem("stat", "1")
     setLoading(false);
-    router.push("/main"); // Redirect to main page
+    router.push("/main"); 
   };
 
   return (
@@ -119,11 +119,6 @@ export default function LoginForm() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        {/* Additional Links */}
-        <p className="text-gray-600 text-center mt-4">
-          Don&apos;t have an account? <a href="#" className="text-blue-600">Sign up</a>
-        </p>
       </div>
     </div>
    
