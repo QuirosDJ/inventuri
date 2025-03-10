@@ -13,10 +13,7 @@ interface StatContextType {
   setStat: (value: number) => void;
 }
 
-const StatContext = createContext<StatContextType>({
-  stat: 0,
-  setStat: () => {},
-});
+
 
 // Define the schema for validation
 const schema = z.object({
@@ -82,7 +79,7 @@ export default function LoginForm() {
   };
 
   return (
-    <StatContext.Provider value={{ stat, setStat }}>
+    
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-2xl">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
@@ -132,14 +129,7 @@ export default function LoginForm() {
         </p>
       </div>
     </div>
-    </StatContext.Provider>
+   
   );
 }
 
-export const useStat = () => {
-  const context = useContext(StatContext);
-  if (!context) {
-    throw new Error("useStat must be used within a StatContext.Provider");
-  }
-  return context;
-};
