@@ -46,9 +46,15 @@ export function TBL({ data }: { data: Item[] }) {
   const availableItems = filteredData.filter((item) => item.quantity > 0);
   const unavailableItems = filteredData.filter((item) => item.quantity <= 0);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+  
+    setFormData({
+      ...formData,
+      [name]: name === "Item_name" || name === "unit" ? value.toUpperCase() : value, 
+    });
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

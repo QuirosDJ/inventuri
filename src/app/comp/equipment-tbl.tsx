@@ -50,8 +50,14 @@ export function TBL2({ data }: { data: Equipment[] }) {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      const { name, value } = e.target;
+    
+      setFormData({
+        ...formData,
+        [name]: name === "Department" || name === "equipment_name" ? value.toUpperCase() : value, 
+      });
     };
+    
     const filteredData = localData.filter(
       (item) =>
         item.equipment_name.toLowerCase().includes(searchQuery.toLowerCase()) &&
