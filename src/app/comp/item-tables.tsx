@@ -25,6 +25,7 @@ type Item = {
 };
 
 export function TBL({ data }: { data: Item[] }) {
+  const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]); 
   const [localData, setLocalData] = useState<Item[]>(data);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +39,7 @@ export function TBL({ data }: { data: Item[] }) {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  
 
   const filteredData = localData.filter((item) =>
     item.Item_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -77,7 +79,7 @@ export function TBL({ data }: { data: Item[] }) {
       const newQuantity = existingItem.quantity + inputQuantity;
   
       const { error } = await supabase
-        .from("ITEMS")
+        .from("items")
         .update({ quantity: newQuantity })
         .eq("id", existingItem.id);
   
@@ -103,7 +105,7 @@ export function TBL({ data }: { data: Item[] }) {
       };
   
       const { data, error } = await supabase
-        .from("ITEMS")
+        .from("items")
         .insert([newItem])
         .select("*");
   
@@ -135,7 +137,7 @@ export function TBL({ data }: { data: Item[] }) {
         }
     
         const { error } = await supabase
-          .from("ITEMS")
+          .from("items")
           .delete()
           .in("id", selectedItems);
     
@@ -156,8 +158,38 @@ export function TBL({ data }: { data: Item[] }) {
     setEditingField(field);
   };
 
+   const handleDownload = async () => {
+        setLoading(true);
+
+        try {
+            const response = await fetch("/supplies_reportgenerator");
+
+            if (!response.ok) {
+                throw new Error("Failed to generate document");
+            }
+
+            // ✅ Convert response to blob (binary data)
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            // ✅ Create a temporary link to trigger download
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "item_report.docx"; // File name
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error downloading document:", error);
+            alert("Failed to download document.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
   const handleUpdate = async (id: number, field: string, value: string | number) => {
-    const { error } = await supabase.from("ITEMS").update({ [field]: value }).eq("id", id);
+    const { error } = await supabase.from("items").update({ [field]: value }).eq("id", id);
   
     if (error) {
       console.error("Error updating item:", error.message);
@@ -178,13 +210,18 @@ export function TBL({ data }: { data: Item[] }) {
   return (
     <div className="relative bg-white/75 shadow-md rounded-lg p-4 w-[95vw] h-[90vh] mx-auto overflow-x-auto ">
 
-      <h2 className="text-lg font-bold mb-4"><input
+      <h2 className="text-lg font-bold mb-4 flex justify-between items-center"><input
         type="text"
         placeholder="Search items..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-1/10 p-2 border border-gray-300 rounded-md mb-4"
       />
+      <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        onClick={handleDownload} 
+        disabled={loading} >
+        Download Report
+      </button>
       </h2>
       <button
         onClick={handleDeleteSelected}

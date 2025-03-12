@@ -53,7 +53,7 @@ export default function BlackHeaderPage() {
     const { data, error } = await supabase.from(table).select("*");
     if (error) console.error(`Error fetching ${table}:`, error.message);
 
-    if (table === "ITEMS") {
+    if (table === "items") {
       setItemsData(data || []);
     } else if (table === "equipment") {
       setEquipmentData(data || []);
@@ -64,12 +64,12 @@ export default function BlackHeaderPage() {
   };
 
   useEffect(() => {
-    fetchData(activeTable === "items" ? "ITEMS" : "equipment");
+    fetchData(activeTable === "items" ? "items" : "equipment");
 
     const subscription = supabase
     .channel(`realtime:${activeTable}`)
     .on("postgres_changes", { event: "*", schema: "public", table: activeTable }, () =>
-      fetchData(activeTable === "items" ? "ITEMS" : "equipment")
+      fetchData(activeTable === "items" ? "items" : "equipment")
     )
     .subscribe();
 
