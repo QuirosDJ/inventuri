@@ -22,6 +22,7 @@ type Equipment = {
 };
 
 export function TBL2({ data }: { data: Equipment[] }) {
+  const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]); 
   const [selectedStatus, setSelectedStatus] = useState("All"); // Status filter
   const [selectedDepartment, setSelectedDepartment] = useState("All");
@@ -87,6 +88,36 @@ export function TBL2({ data }: { data: Equipment[] }) {
         setSelectedItems([]); // Clear selection
       }
     };
+
+    const handleDownload = async () => {
+      setLoading(true);
+
+      try {
+          const response = await fetch("/api/equipments_reportgenerator");
+
+          if (!response.ok) {
+              throw new Error("Failed to generate document");
+          }
+
+          // ✅ Convert response to blob (binary data)
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+
+          // ✅ Create a temporary link to trigger download
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "equipment_report.docx"; // File name
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+      } catch (error) {
+          console.error("Error downloading document:", error);
+          alert("Failed to download document.");
+      } finally {
+          setLoading(false);
+      }
+  };
     
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -179,16 +210,19 @@ export function TBL2({ data }: { data: Equipment[] }) {
   return (
     <div className="relative bg-white/75 shadow-md rounded-lg p-4 w-[95vw] h-[90vh] mx-auto overflow-x-auto">
       <h2 className="text-lg font-bold mb-4">
+      <div className="flex justify-between items-center">
+    <div className="flex gap-2">
+
       <input
         type="text"
         placeholder="Search equipment..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-1/10 p-2 border border-gray-300 rounded-md mb-4"
+        className="w-1/10 p-1 border border-gray-300 rounded-md mb-4"
       /><select
       value={selectedDepartment}
       onChange={(e) => setSelectedDepartment(e.target.value)}
-      className="w-1/3 p-2 border border-gray-300 rounded-md bg-white"
+      className="w-1/3 p-1 border border-gray-300 rounded-md bg-white"
     >
       {departments.map((dept) => (
         <option key={dept} value={dept}>
@@ -199,7 +233,7 @@ export function TBL2({ data }: { data: Equipment[] }) {
     <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="w-1/3 p-2 border border-gray-300 rounded-md bg-white ml-2"
+          className="w-1/3 p-1 border border-gray-300 rounded-md bg-white ml-2"
         >
           {statuses.map((status) => (
             <option key={status} value={status}>
@@ -209,11 +243,17 @@ export function TBL2({ data }: { data: Equipment[] }) {
         </select>
         <button
         onClick={handleDeleteSelected}
-        className="mb-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        className="mb-4 px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700"
         disabled={selectedItems.length === 0}
       >
         Delete Selected
       </button>
+      <button className="bg-blue-500 text-white mb-4 px-4 py-1 rounded-md hover:bg-blue-600"
+      >
+        Download Report
+      </button>
+      </div>
+      </div>
       </h2>
       <div className="flex space-x-4">
         <table className="w-full border-collapse border border-gray-300 text-left">

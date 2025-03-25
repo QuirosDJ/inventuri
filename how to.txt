@@ -8,3 +8,13 @@ git commit -m "Initial commit"
 git remote add origin https://github.com/your-username/your-repo.git
 git branch -M main
 git push -u origin main
+
+Spiking 🚀 – Sudden and large increase in usage.
+
+Increasing 📈 – Steady growth in usage over time.
+
+Stable 🔄 – Usage remains mostly constant.
+
+Decreasing 📉 – Gradual decline in usage.
+
+Dropping

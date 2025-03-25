@@ -36,6 +36,14 @@ export function TBL({ data }: { data: Item[] }) {
     quantity: "",
    
   });
+  const formatDate = () => {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // Get month (0-based index)
+    const day = String(now.getDate()).padStart(2, "0"); // Get day
+    const year = String(now.getFullYear()).slice(-2); // Get last 2 digits of the year
+    return `${month}-${day}-${year}`;
+  };
+
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,6 +110,7 @@ export function TBL({ data }: { data: Item[] }) {
         quantity: inputQuantity,
         avail: 1,
         stat: 1,
+        created_at: formatDate(),
       };
   
       const { data, error } = await supabase
@@ -162,7 +171,7 @@ export function TBL({ data }: { data: Item[] }) {
         setLoading(true);
 
         try {
-            const response = await fetch("/supplies_reportgenerator");
+            const response = await fetch("/api/supplies_reportgenerator");
 
             if (!response.ok) {
                 throw new Error("Failed to generate document");

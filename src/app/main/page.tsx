@@ -112,7 +112,7 @@ export default function BlackHeaderPage() {
           </li>
           <li>
           <button onClick={() => setActiveTable("reports")} className="block w-full text-left p-2 rounded hover:bg-gray-700">
-              Reports
+              Analytics
             </button>
           </li>
           <li>
