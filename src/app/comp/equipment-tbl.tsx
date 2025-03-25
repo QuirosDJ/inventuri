@@ -22,7 +22,7 @@ type Equipment = {
 };
 
 export function TBL2({ data }: { data: Equipment[] }) {
-  const [loading, setLoading] = useState(false);
+ 
   const [selectedItems, setSelectedItems] = useState<number[]>([]); 
   const [selectedStatus, setSelectedStatus] = useState("All"); // Status filter
   const [selectedDepartment, setSelectedDepartment] = useState("All");
@@ -89,35 +89,7 @@ export function TBL2({ data }: { data: Equipment[] }) {
       }
     };
 
-    const handleDownload = async () => {
-      setLoading(true);
-
-      try {
-          const response = await fetch("/api/equipments_reportgenerator");
-
-          if (!response.ok) {
-              throw new Error("Failed to generate document");
-          }
-
-          // ✅ Convert response to blob (binary data)
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-
-          // ✅ Create a temporary link to trigger download
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "equipment_report.docx"; // File name
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-      } catch (error) {
-          console.error("Error downloading document:", error);
-          alert("Failed to download document.");
-      } finally {
-          setLoading(false);
-      }
-  };
+    
     
 
     const handleSubmit = async (e: React.FormEvent) => {
