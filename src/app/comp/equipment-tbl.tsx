@@ -38,6 +38,7 @@ export function TBL2({ data }: { data: Equipment[] }) {
       status: "",
      
     });
+    
      const [searchQuery, setSearchQuery] = useState("");
      const statuses = ["All", "Good", "Need Repair", "Need Maintenance"];
      const departments = ["All", ...new Set(data.map((item) => item.Department))];
